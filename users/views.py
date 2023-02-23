@@ -29,6 +29,15 @@ def register(request):
         
     }
     
-    return render(request, context
+    return render(request, context)
+    
+def user_login(request):
+    form = AuthenticationForm(request, data=request.POST or None)
+    
+    if form.is_valid():
+        user = form.get_user()
+        login(request, user)
+        return redirect('home
+    return render(request, {'form': form})
 
     
