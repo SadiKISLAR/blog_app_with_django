@@ -2,17 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
 
-from users.forms import UserProfileForm, UseForm
+from users.forms import UserProfileForm, UserForm
 
 
 # Create your views here.
 
 
 def register(request):
-    form_user = UseForm()
+    form_user = UserForm()
     form_profile = UserProfileForm()
     if request.method == 'POST':
-        form_user = UseForm(request.POST, request.FILES)
+        form_user = UserForm(request.POST, request.FILES)
         if form_user.is_valid() and form_profile.is_valid():
             user = form_user.save()
             profile = form_profile.save(commit=False)
