@@ -15,7 +15,7 @@ def register(request):
         form_user = UseForm(request.POST, request.FILES)
         if form_user.is_valid() and form_profile.is_valid():
             user = form_user.save()
-            profile = form_profile.save(commit=F
+            profile = form_profile.save(commit=False)
             profile.user = user
             profile.save()
             
@@ -37,7 +37,7 @@ def user_login(request):
     if form.is_valid():
         user = form.get_user()
         login(request, user)
-        return redirect('home
+        return redirect('home')
     return render(request, {'form': form})
 
     
