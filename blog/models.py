@@ -17,7 +17,7 @@ blog_status = [
 class Blog(models.Model):
     title = models.CharField(max_length=30)
     content = models.TextField()
-    image = models.URLField(max_length=200, blank='True')
+    image = models.URLField(blank='True')
     category = models.CharField(max_length=20, choices=blog_category)
     status = models.CharField(max_length=20, choices=blog_status, default="P")
     published_date = models.DateTimeField(auto_now_add=True)
@@ -46,7 +46,7 @@ class Blog(models.Model):
         return self.like.count()
 
 
-class Comment(models.model):
+class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     content = models.TextField()
@@ -64,7 +64,7 @@ class BlogView(models.Model):
         return f"{self.user.username}'s View"
 
 
-class Like(models.Mdodel):
+class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='like')
 

@@ -1,9 +1,14 @@
 from django.urls import path, include
-from .views import home
 from rest_framework import routers
+
+from .views import (
+    BlogView,
+    BlogDetailView,
+)
 
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    path('blog/', include(router.urls))
+    path('blog/', BlogView.as_view(), name='blog_list'),
+    path('blog/<int:pk>/', BlogDetailView.as_view(), name='blog_detail'),
 ]
