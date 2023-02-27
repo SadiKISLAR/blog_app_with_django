@@ -19,7 +19,6 @@ class BlogSerializer(serializers.ModelSerializer):
             "status" ,
             "published_date",
             "updated_date",
-            "slug" ,
             "author"
             ]
 

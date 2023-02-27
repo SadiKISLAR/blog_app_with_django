@@ -22,7 +22,7 @@ class Blog(models.Model):
     status = models.CharField(max_length=20, choices=blog_status, default="P")
     published_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    slug = models.SlugField(blank=True, unique=True)
+    # slug = models.SlugField(blank=True, unique=True)
     author=models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     
 
