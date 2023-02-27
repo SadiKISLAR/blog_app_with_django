@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     
     #third party
     'rest_framework',
+    'dj_rest_auth',
     
 ]
 
