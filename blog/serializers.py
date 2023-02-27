@@ -12,6 +12,7 @@ class BlogSerializer(serializers.ModelSerializer):
         model = Blog
         fields = [
             "id",
+            "title",
             "content",
             "image" ,
             "category",
