@@ -68,11 +68,11 @@ class LikeView(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
 
         obj = get_object_or_404(Blog, id=request.data["blog_id"])
-        like_queryset = Like.objects.filter(user=request.user, blog=obj)
+        like_queryset = Like.objects.filter(user_id=request.user.id, blog=obj)
         if like_queryset.exists():
             like_queryset[0].delete()
         else:
-            Like.objects.create(user=request.user, blog=obj)   
+            Like.objects.create(user_id=request.user.id, blog=obj)
         
         data = {
             "msg":"Like",
@@ -82,3 +82,19 @@ class LikeView(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
+
+class CommentView(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        obj = get_object_or_404(Blog, id=request.data["blog_id"])
+
+        Comment.objects.create(user_id=request.user.id, blog=obj)
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)

@@ -10,7 +10,7 @@ from .models import (
 class LikeSerializer(serializers.ModelSerializer):
 
     user= serializers.StringRelatedField()
-    user_id= serializers.IntegerField()
+    user_id= serializers.IntegerField(read_only=True)
     blog= serializers.StringRelatedField()
     blog_id = serializers.IntegerField()
 
@@ -24,11 +24,32 @@ class LikeSerializer(serializers.ModelSerializer):
             "blog_id"
         )
 
+class CommentSerializer(serializers.ModelSerializer):
+
+    user = serializers.StringRelatedField()
+    user_id = serializers.IntegerField(read_only=True)
+    blog = serializers.StringRelatedField()
+    blog_id = serializers.IntegerField()
+
+    class Meta:
+        model = Comment
+
+        fields = [
+            "id",
+            "user_id",
+            "user",
+            "blog_id",
+            "blog",
+            "content",
+            "publish_date"
+        ]
+
 class BlogSerializer(serializers.ModelSerializer):
 
     like = LikeSerializer(many=True, read_only=True)
     like_count = serializers.SerializerMethodField()
     has_liked = serializers.SerializerMethodField()
+    comments = CommentSerializer(many=True, read_only=True)
     
     class Meta:
         model = Blog
@@ -42,9 +63,10 @@ class BlogSerializer(serializers.ModelSerializer):
             "published_date",
             "updated_date",
             "author",
-            "like",
+            # "like",
             "like_count",
             "has_liked",
+            "comments",
             ]
         
     def get_like_count(self, obj):
@@ -55,21 +77,7 @@ class BlogSerializer(serializers.ModelSerializer):
         if request.user.is_authenticated:
             if Blog.objects.filter(Q(like__user=request.user) & Q(like__blog=obj)).exists():
                 return True
-            return False
-
-class CommentSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Comment
-
-        fields = [
-            "id",
-            "user",
-            "blog",
-            "content",
-            "publish_date"
-        ]
-        
+            return False        
 
 class BlogViewSerializer(serializers.ModelSerializer):
 

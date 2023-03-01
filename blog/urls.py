@@ -8,10 +8,12 @@ from .views import (
     BlogUpdateView,
     BlogDeleteView,
     LikeView,
+    CommentView,
 )
 
 router = routers.DefaultRouter()
 router.register("like", LikeView)
+router.register("comment", CommentView)
 
 urlpatterns = [
     path('blog/', BlogListView.as_view(), name='blog_list'),
